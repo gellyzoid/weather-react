@@ -53,7 +53,24 @@ function WeatherDisplay() {
   return (
     <>
       <div className="flex items-center justify-end m-4 gap-2">
-        <button className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700 text-xs">
+        <button
+          className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700 text-xs"
+          onClick={() => {
+            Swal.fire({
+              text: "Clear location(s)?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              cancelButtonText: "No",
+              confirmButtonColor: "#d33",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setCoordinates([]);
+                Swal.fire("Cleared!", "Locations has been cleared.", "success");
+              }
+            });
+          }}
+        >
           Clear
         </button>
         <select
