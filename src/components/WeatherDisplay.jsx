@@ -78,7 +78,7 @@ function WeatherDisplay() {
           value={refreshTime}
           onChange={(e) => setRefreshTime(e.target.value)}
         >
-          <option value="">Refreshes after</option>
+          <option value={300000}>Refreshes after</option>
           <option value={300000}>5 minutes</option>
           <option value={600000}>10 minutes</option>
           <option value={900000}>15 minutes</option>
