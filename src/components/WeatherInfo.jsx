@@ -2,6 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useWeather } from "../contexts/WeatherContext";
 import LoadingMini from "./LoadingMini";
+import { format } from "date-fns";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { Tooltip } from "flowbite-react";
 
 function WeatherInfo() {
   const { coordinates } = useWeather();
@@ -140,6 +151,13 @@ function WeatherInfo() {
     return weatherMap[wmoCode] || { description: "Unknown", image: "" };
   }
 
+  const chartData = locationInfo?.daily?.time?.map((time, index) => {
+    return {
+      date: format(new Date(time), "MMM dd, yyyy"),
+      tempMax: locationInfo?.daily?.temperature_2m_max[index],
+    };
+  });
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -190,7 +208,24 @@ function WeatherInfo() {
       <h1 className="text-lg font-bold text-gray-800 dark:text-white mb-6">
         7-Day Forecast
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="tempMax"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
         {locationInfo?.daily?.time?.map((date, index) => {
           const { description, image } = getWeatherDetails(
             locationInfo?.daily.weather_code[index]
@@ -202,11 +237,7 @@ function WeatherInfo() {
               className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
             >
               <p className="text-lg font-semibold text-gray-800 dark:text-white">
-                {new Date(date).toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "short",
-                  day: "numeric",
-                })}
+                {format(new Date(date), "EEE, MMM dd, yyyy")}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {new Date(date).toLocaleDateString("en-US", {
