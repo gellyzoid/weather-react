@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingMini from "./LoadingMini";
 import Swal from "sweetalert2";
 
-const OPEN_WEATHER_KEY = "YOUR_OPENWEATHER_API_KEY";
+const OPEN_WEATHER_KEY = "YOUR_OPENWEATHERMAP_API_KEY";
 
 function WeatherDisplay() {
   const { coordinates, setCoordinates, refreshTime, setRefreshTime } =
@@ -78,7 +78,7 @@ function WeatherDisplay() {
           value={refreshTime}
           onChange={(e) => setRefreshTime(e.target.value)}
         >
-          <option value={300000}>Refreshes after</option>
+          <option value={500000}>Refreshes after</option>
           <option value={300000}>5 minutes</option>
           <option value={600000}>10 minutes</option>
           <option value={900000}>15 minutes</option>
