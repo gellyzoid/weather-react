@@ -30,8 +30,6 @@ function WeatherInfo() {
     (coordinate) => coordinate.id === Number(searchParams.get("id"))
   );
 
-  console.log(displayName);
-
   function getWeatherDetails(wmoCode) {
     const weatherMap = {
       0: {
